@@ -6,6 +6,7 @@ RUN apk add curl
 RUN apk add jq
 
 COPY html /root/html/
+COPY cert /root/cert/
 
 COPY config.json.tp /root/
 # COPY caddy.template.conf /root/
