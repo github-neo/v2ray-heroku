@@ -9,7 +9,8 @@ COPY html /root/html/
 
 COPY config.json.tp /root/
 # COPY caddy.template.conf /root/
-COPY Caddyfile /root/
+COPY Caddyfile_http /root/
+COPY Caddyfile_https /root/
 COPY cert /root/cert/
 
 ADD startup.sh /startup.sh

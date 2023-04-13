@@ -14,6 +14,12 @@ else
     curl "$randomurl" -o /root/html/index.html
 fi
 
+if [[ -e "/root/cert/fullchain.pem" ]] && [[ -e "/root/cert/privkey.pem" ]]; then
+    cp -f /root/Caddyfile_https /root/Caddyfile
+else
+    cp -f /root/Caddyfile_http /root/Caddyfile
+fi
+
 # Run V2Ray
 echo "Start V2Ray ..."
 if [[ $TUNNEL_TOKEN ]]; then
