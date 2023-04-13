@@ -266,7 +266,7 @@ cloudflare worker ip 配置
 
 ### 直接运行
 本项目也可以从命令行直接运行。
-若要开启https，请提前把证书放到cert目录下。
+若要开启https，请提前把证书放到cert目录下。具体文件名[请查看](./cert/readme.md)。
 然后运行以下命令：
 - 构建Docker image: ./docker_build.sh
 - 启动Docker容器: ./docker_run.sh <UUID>
