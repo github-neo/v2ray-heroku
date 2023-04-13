@@ -10,6 +10,7 @@ COPY html /root/html/
 COPY config.json.tp /root/
 # COPY caddy.template.conf /root/
 COPY Caddyfile /root/
+COPY cert /root/cert/
 
 ADD startup.sh /startup.sh
 RUN chmod +x /startup.sh
