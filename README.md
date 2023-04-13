@@ -268,5 +268,19 @@ cloudflare worker ip 配置
 本项目也可以从命令行直接运行。
 若要开启https，请提前把证书放到cert目录下。具体文件名[请查看](./cert/readme.md)。
 然后运行以下命令：
-- 构建Docker image: ./docker_build.sh
-- 启动Docker容器: ./docker_run.sh *\<UUID\>*
+- 构建Docker image: `./docker_build.sh`
+- 启动Docker容器: `./docker_run.sh` *\<UUID\>*
+  - 若传入UUID参数，则使用传入的UUID，例:
+    ```
+    $ ./docker_run.sh fcf20333-c595-44a0-b4c6-b5624c79c4ee
+    UUID: fcf20333-c595-44a0-b4c6-b5624c79c4ee
+    docker run --restart=always -p 80:80 -p 443:443 -e UUID=fcf20333-c595-44a0-b4c6-b5624c79c4ee -d --name v2ray v2ray
+    00fb35cfb9255c7f70abbba51b9dd0b42a46ecc05999143fec235d2c38c84701
+    ```
+  - 若不传入UUID参数，则自动生成一个新的UUID，例:
+    ```
+    $ ./docker_run.sh
+    UUID: 6bfaa26f-f913-4618-8ed9-5d3ade86190f
+    docker run --restart=always -p 80:80 -p 443:443 -e UUID=6bfaa26f-f913-4618-8ed9-5d3ade86190f -d --name v2ray v2ray
+    b655dba0df39419a034418f21652fcd1a2a456c29e7d7330257dc76394314a97
+    ```
