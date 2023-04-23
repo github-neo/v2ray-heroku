@@ -1,5 +1,4 @@
 http://:{$PORT} {
-    tls /root/cert/fullchain.pem /root/cert/privkey.pem
     root * /root/html
     file_server
     # http2 not support by heroku yet
