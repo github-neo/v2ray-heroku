@@ -314,5 +314,15 @@ cloudflare worker ip 配置
     这样将会使用您所提供的证书。
   - 如果没有证书，将禁用https，以http的方式运行在80端口。
 - 如果您使用的不是 Cloudflare，可以修改 `docker_compose.sh` 文件中的 `--dns` 参数以适配您的 DNS 服务商，并在 `acme_env.sh` 中设置好相应的环境变量。
+- Cloudflare 现已不支持 `.tk .cf .ml` 等免费域名后缀使用此 DNS API 验证方式，付费域名才受支持。如果您的域名属于这种情况，请修改 `docker_compose.sh` 文件中的 `--issue` 命令改用 `standalone` 等其他方式获取证书。或自行获取证书，然后按上述说明引入证书文件。
+  - `acme.sh` 使用 `standalone` 方式获取证书命令示例：
+    - http 模式（使用80端口）：
+      ```bash
+      docker exec acme.sh --issue --standalone -d example.com
+      ```
+    - tls 模式（使用443端口）：
+      ```bash
+      docker exec acme.sh --issue --standalone --alpn -d example.com
+      ```
 - 如果您需要更改 Caddy 的配置，请修改 `Caddyfile_https` 或 `Caddyfile_http` 文件，以及 `startup.sh` 启动脚本，然后重新构建镜像。
 - 如果您需要更改 V2Ray 的配置，请修改 `config.json.tp` 文件，然后重新构建镜像。
