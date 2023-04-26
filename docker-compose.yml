@@ -1,0 +1,35 @@
+# Required environment variables:
+# UUID
+
+version: '3.4'
+services:
+  caddy_v2ray:
+    container_name: caddy_v2ray
+    image: caddy_v2ray
+    restart: unless-stopped
+    environment:
+      UUID:
+    volumes:
+      - ${HOME_PATH}/caddy_v2ray-cert:/root/cert
+    ports:
+      - "80:80"
+      - "443:443"
+    labels:
+      - sh.acme.autoload=caddy_v2ray
+
+  acme.sh:
+    image: neilpang/acme.sh:dev
+    container_name: acme.sh    
+    command: daemon
+    network_mode: host
+    volumes:
+      - ${HOME_PATH}/acmeout:/acme.sh
+      - /var/run/docker.sock:/var/run/docker.sock 
+    environment:
+      DEPLOY_DOCKER_CONTAINER_LABEL: sh.acme.autoload=caddy_v2ray
+      DEPLOY_DOCKER_CONTAINER_KEY_FILE: /root/cert/privkey.pem
+      DEPLOY_DOCKER_CONTAINER_CERT_FILE: /root/cert/cert.pem
+      DEPLOY_DOCKER_CONTAINER_CA_FILE: /root/cert/ca.pem
+      DEPLOY_DOCKER_CONTAINER_FULLCHAIN_FILE: /root/cert/fullchain.pem
+      DEPLOY_DOCKER_CONTAINER_RELOAD_CMD: "caddy stop"
+  
