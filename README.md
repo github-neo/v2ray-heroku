@@ -1,4 +1,5 @@
-# 项目已死
+# Heroku已经不再免费了
+如果你不再使用Heroku，可以直接看[自行部署运行](#%E8%87%AA%E8%A1%8C%E9%83%A8%E7%BD%B2%E8%BF%90%E8%A1%8C)。
 
 **Starting October 26, 2022, we will begin deleting inactive accounts and associated storage for accounts that have been inactive for over a year. 
 Starting November 28, 2022, we plan to stop offering free product plans and plan to start shutting down free dynos and data services. 
