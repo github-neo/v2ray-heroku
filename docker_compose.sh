@@ -29,12 +29,18 @@ docker compose config
 _log "docker compose up -d"
 docker compose up -d
 
-# Options for debugging acme.sh:  --debug 3 --log-level 2 --syslog 7 --log
-_log "docker exec acme.sh --register-account -m $EMAIL"
-docker exec acme.sh --register-account -m $EMAIL
+if [[ $DOMAIN ]]; then
+    _log "DOMAIN is $DOMAIN, try to get cert ..."
 
-_log "docker exec --env-file $ENV_FILE acme.sh --issue --dns dns_cf -d $DOMAIN"
-docker exec --env-file $ENV_FILE acme.sh --issue --dns dns_cf -d $DOMAIN
+    # Options for debugging acme.sh:  --debug 3 --log-level 2 --syslog 7 --log
+    _log "docker exec acme.sh --register-account -m $EMAIL"
+    docker exec acme.sh --register-account -m $EMAIL
 
-_log docker exec acme.sh --deploy --deploy-hook docker -d $DOMAIN
-docker exec acme.sh --deploy --deploy-hook docker -d $DOMAIN
+    _log "docker exec --env-file $ENV_FILE acme.sh --issue --dns dns_cf -d $DOMAIN"
+    docker exec --env-file $ENV_FILE acme.sh --issue --dns dns_cf -d $DOMAIN
+
+    _log docker exec acme.sh --deploy --deploy-hook docker -d $DOMAIN
+    docker exec acme.sh --deploy --deploy-hook docker -d $DOMAIN
+else
+    _log "DOMAIN is missed, skip getting cert ..."
+fi

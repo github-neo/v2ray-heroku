@@ -264,23 +264,55 @@ cloudflare worker ip 配置
 
 ![v2rayN1](/readme-data/V2rayN1.jpg)
 
-### 直接运行
-本项目也可以从命令行直接运行。
-若要开启https，请提前把证书放到cert目录下。具体文件名[请查看](./cert/readme.md)。
-然后运行以下命令：
-- 构建Docker image: `./docker_build.sh`
-- 启动Docker容器: `./docker_run.sh` *\<UUID\>*
-  - 若传入UUID参数，则使用传入的UUID，例:
-    ```
-    $ ./docker_run.sh fcf20333-c595-44a0-b4c6-b5624c79c4ee
-    UUID: fcf20333-c595-44a0-b4c6-b5624c79c4ee
-    docker run --restart=always -p 80:80 -p 443:443 -e UUID=fcf20333-c595-44a0-b4c6-b5624c79c4ee -d --name v2ray v2ray
-    00fb35cfb9255c7f70abbba51b9dd0b42a46ecc05999143fec235d2c38c84701
-    ```
-  - 若不传入UUID参数，则自动生成一个新的UUID，例:
-    ```
-    $ ./docker_run.sh
-    UUID: 6bfaa26f-f913-4618-8ed9-5d3ade86190f
-    docker run --restart=always -p 80:80 -p 443:443 -e UUID=6bfaa26f-f913-4618-8ed9-5d3ade86190f -d --name v2ray v2ray
-    b655dba0df39419a034418f21652fcd1a2a456c29e7d7330257dc76394314a97
-    ```
+# 自行部署运行
+
+本项目是一个基于 Docker 的 Caddy + V2Ray + acme.sh 自动证书申请工具的部署方案。使用 Docker Compose 编排 Caddy+V2Ray 和 acme.sh 两个容器，并自动配置 HTTPS 访问。
+
+## 环境要求
+
+- Linux系统
+- 已安装 Docker 和 Docker Compose
+- 已在 Cloudflare 中添加域名，并取得相应的 API Token 和 Account ID
+
+## 使用步骤
+
+1. 在当前用户home目录下创建acme目录。
+
+   ```bash
+   mkdir ~/acme
+   ```
+
+2. 复制 `acme_env.sh.sample` 文件到~/acme目录并重命名为 `acme_env.sh`：
+
+   ```bash
+   cp acme_env.sh.sample ~/acme/acme_env.sh
+   ```
+
+3. 修改 `~/acme/acme_env.sh` 文件，填入您的邮箱、域名、Cloudflare API Token 和 Account ID。如果您已经有一个 UUID，请将其填入 `UUID` 变量中；否则，可以留空，脚本将自动生成一个 UUID，并显示在log中。
+
+4. 构建镜像：
+
+   ```bash
+   ./docker_build.sh
+   ```
+
+5. 运行容器：
+
+   ```bash
+   ./docker_compose.sh
+   ```
+
+6. 完成以上步骤后，Caddy 和 V2Ray 会自动启动，并监听 80 和 443 端口，同时 acme.sh 会自动申请证书并配置 HTTPS 访问。
+
+## 注意事项
+
+- 若要禁用自动申请证书，删除或注释掉 `~/acme/acme_env.sh` 中的 `DOMAIN` 变量即可。
+  - 如果您已经有可用的证书文件，请提前将其放置到 `~/acme/caddy_v2ray-cert` 目录下，命名为 `Caddyfile_https` 文件中期待的文件名：
+    - `privkey.pem`  : 证书的私钥。
+    - `fullchain.pem`: 浏览器需要的完整证书链，包括公钥、元数据、根证书和中间证书等 ( *Root CA -> Sub CA -> your cert* )。
+
+    这样将会使用您所提供的证书。
+  - 如果没有证书，将禁用https，以http的方式运行在80端口。
+- 如果您使用的不是 Cloudflare，可以修改 `docker_compose.sh` 文件中的 `--dns` 参数以适配您的 DNS 服务商，并在 `acme_env.sh` 中设置好相应的环境变量。
+- 如果您需要更改 Caddy 的配置，请修改 `Caddyfile_https` 或 `Caddyfile_http` 文件，以及 `startup.sh` 启动脚本，然后重新构建镜像。
+- 如果您需要更改 V2Ray 的配置，请修改 `config.json.tp` 文件，然后重新构建镜像。

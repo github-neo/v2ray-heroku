@@ -2,5 +2,5 @@ EMAIL=example@email.com
 DOMAIN=example.com
 CF_Token=<Cloudflare API Token>
 CF_Account_ID=<Cloudflare Account ID>
-# CF_Zone_ID=<Cloudflare Zone ID>
+# CF_Zone_ID=<Cloudflare Zone ID, optional>
 UUID=<UUID>
