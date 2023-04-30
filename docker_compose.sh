@@ -1,3 +1,5 @@
+#!/bin/bash
+
 _log() {
     printf "[$(date)] $* \n"
 }
@@ -32,15 +34,22 @@ docker compose up -d
 if [[ $DOMAIN ]]; then
     _log "DOMAIN is $DOMAIN, try to get cert ..."
 
+    DOMAIN_ARGS=""
+    domain_arr=(${DOMAIN//,/ }) 
+    for elm in ${domain_arr[@]}
+    do
+        DOMAIN_ARGS="${DOMAIN_ARGS} -d ${elm}"
+    done
+
     # Options for debugging acme.sh:  --debug 3 --log-level 2 --syslog 7 --log
     _log "docker exec acme.sh --register-account -m $EMAIL"
     docker exec acme.sh --register-account -m $EMAIL
 
-    _log "docker exec --env-file $ENV_FILE acme.sh --issue --dns dns_cf -d $DOMAIN"
-    docker exec --env-file $ENV_FILE acme.sh --issue --dns dns_cf -d $DOMAIN
+    _log "docker exec --env-file $ENV_FILE acme.sh --issue --dns dns_cf${DOMAIN_ARGS}"
+    docker exec --env-file $ENV_FILE acme.sh --issue --dns dns_cf${DOMAIN_ARGS}
 
-    _log docker exec acme.sh --deploy --deploy-hook docker -d $DOMAIN
-    docker exec acme.sh --deploy --deploy-hook docker -d $DOMAIN
+    _log "docker exec acme.sh --deploy --deploy-hook docker${DOMAIN_ARGS}"
+    docker exec acme.sh --deploy --deploy-hook docker${DOMAIN_ARGS}
 else
     _log "DOMAIN is missed, skip getting cert ..."
 fi
