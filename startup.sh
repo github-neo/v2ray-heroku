@@ -34,8 +34,10 @@ wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudfla
 chmod +x /root/cloudflared
 # /usr/bin/v2ray -config /root/config.json & /root/cloudflared tunnel --no-autoupdate run --token $TUNNEL_TOKEN & nginx -c /root/nginx.conf -g 'daemon off;'
 _log "Start V2Ray and cloudflared tunnel"
-v2ray run -c /root/config.json & caddy run --watch --config /root/Caddyfile & /root/cloudflared tunnel --no-autoupdate run --token $TUNNEL_TOKEN --protocol http2
+# v2ray run -c /root/config.json & caddy run --watch --config /root/Caddyfile & /root/cloudflared tunnel --no-autoupdate run --token $TUNNEL_TOKEN --protocol http2
+/usr/bin/xray -config /root/config.json & caddy run --watch --config /root/Caddyfile & /root/cloudflared tunnel --no-autoupdate run --token $TUNNEL_TOKEN --protocol http2
 else
 _log "Start V2Ray without cloudflared"
-v2ray run -c /root/config.json & caddy run --watch --config /root/Caddyfile
+# v2ray run -c /root/config.json & caddy run --watch --config /root/Caddyfile
+/usr/bin/xray -config /root/config.json & caddy run --watch --config /root/Caddyfile
 fi

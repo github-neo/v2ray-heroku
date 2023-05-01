@@ -1,4 +1,4 @@
-FROM v2fly/v2fly-core:latest
+FROM teddysun/xray:latest
 
 RUN apk add caddy
 RUN apk add gettext
