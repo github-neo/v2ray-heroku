@@ -1,4 +1,8 @@
-https://:{$PORT} {
+{
+  http_port 80
+  https_port 8443
+}
+https://:8443 {
     tls /root/cert/fullchain.pem /root/cert/privkey.pem
     root * /root/html
     file_server
