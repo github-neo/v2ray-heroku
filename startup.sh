@@ -31,6 +31,11 @@ fi
 _log populate /root/config.json
 envsubst < /root/v2ray_config.json > /root/config.json
 
+_log update geoip.dat ...
+curl -Lo /usr/share/xray/geoip.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
+_log update geosite.dat ...
+curl -Lo /usr/share/xray/geosite.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
+
 # Run V2Ray
 _log "Start V2Ray ..."
 if [[ $TUNNEL_TOKEN ]]; then
