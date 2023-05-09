@@ -6,7 +6,6 @@ _log() {
 
 _log "start to run startup ..."
 
-envsubst < /root/config.json.tp > /root/config.json
 # envsubst '\$PORT' < /root/nginx.template.conf > /root/nginx.conf
 
 # get random page from wikipedia
@@ -18,13 +17,19 @@ else
     curl "$randomurl" -o /root/html/index.html
 fi
 
+_log use Caddyfile_http
+cp -f /root/Caddyfile_http /root/Caddyfile
+
 if [[ -e "/root/cert/fullchain.pem" ]] && [[ -e "/root/cert/privkey.pem" ]]; then
-    _log use Caddyfile_https
-    cp -f /root/Caddyfile_http /root/Caddyfile
+    _log use v2ray_config_https.json
+    cp -f /root/v2ray_config_https.json /root/v2ray_config.json
 else
-    _log use Caddyfile_http
-    cp -f /root/Caddyfile_http /root/Caddyfile
+    _log use v2ray_config_http.json
+    cp -f /root/v2ray_config_http.json /root/v2ray_config.json
 fi
+
+_log populate /root/config.json
+envsubst < /root/v2ray_config.json > /root/config.json
 
 # Run V2Ray
 _log "Start V2Ray ..."
