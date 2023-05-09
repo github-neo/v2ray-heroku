@@ -2,8 +2,21 @@
     "log": {
         "loglevel": "info"
     },
+    "routing": {
+        "domainStrategy": "IPIfNonMatch",
+        "rules": [
+            {
+                "type": "field",
+                "ip": [
+                    "geoip:cn"
+                ],
+                "outboundTag": "block"
+            }
+        ]
+    },
     "inbounds": [
         {
+            "listen": "0.0.0.0",
             "port": 443,
             "protocol": "vless",
             "settings": {
@@ -26,16 +39,25 @@
                 "network": "tcp",
                 "security": "tls",
                 "tlsSettings": {
+                    "minVersion": "1.2",
                     "alpn": [
                         "http/1.1"
                     ],
                     "certificates": [
                         {
+                            "ocspStapling": 3600,
                             "certificateFile": "/root/cert/fullchain.pem", // Replace with your certificate, absolute path
                             "keyFile": "/root/cert/privkey.pem" // Replace it with your private key, absolute path
                         }
                     ]
                 }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls"
+                ]
             }
         },
         {
@@ -60,7 +82,20 @@
     ],
     "outbounds": [
         {
-            "protocol": "freedom"
+            "protocol": "freedom",
+            "tag": "direct"
+        },
+        {
+            "protocol": "blackhole",
+            "tag": "block"
         }
-    ]
+    ],
+    "policy": {
+        "levels": {
+            "0": {
+                "handshake": 2, // The handshake time limit when the connection is established, in seconds, the default value is 4, it is recommended to be different from the default value
+                "connIdle": 120 // Connection idle time limit in seconds, the default value is 300, it is recommended to be different from the default value
+            }
+        }
+    }
 }

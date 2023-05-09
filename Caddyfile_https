@@ -1,6 +1,6 @@
 {
   http_port 80
-  https_port 8443
+  https_port 443
 }
 https://:{$PORT} {
     tls /root/cert/fullchain.pem /root/cert/privkey.pem
