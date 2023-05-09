@@ -7,11 +7,10 @@ RUN apk add jq
 
 COPY html /root/html/
 
-COPY config.json.tp /root/
-# COPY caddy.template.conf /root/
+COPY v2ray_config_http.json /root/
+COPY v2ray_config_https.json /root/
 COPY Caddyfile_http /root/
 COPY Caddyfile_https /root/
-# COPY cert /root/cert/
 
 ADD startup.sh /startup.sh
 RUN chmod +x /startup.sh
