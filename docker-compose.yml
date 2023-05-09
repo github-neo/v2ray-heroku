@@ -14,7 +14,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "8443:8443"
     labels:
       - sh.acme.autoload=caddy_v2ray
 

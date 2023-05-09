@@ -18,8 +18,7 @@
                 "decryption": "none",
                 "fallbacks": [
                     {
-                        "dest": 8443, // Fall back to caddy
-                        "xver": 1
+                        "dest": 80 // Fall back to caddy
                     }
                 ]
             },

@@ -20,7 +20,7 @@ fi
 
 if [[ -e "/root/cert/fullchain.pem" ]] && [[ -e "/root/cert/privkey.pem" ]]; then
     _log use Caddyfile_https
-    cp -f /root/Caddyfile_https /root/Caddyfile
+    cp -f /root/Caddyfile_http /root/Caddyfile
 else
     _log use Caddyfile_http
     cp -f /root/Caddyfile_http /root/Caddyfile
