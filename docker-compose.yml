@@ -18,8 +18,9 @@ services:
       - sh.acme.autoload=caddy_v2ray
 
   acme.sh:
+    container_name: acme.sh
     image: neilpang/acme.sh:dev
-    container_name: acme.sh    
+    restart: unless-stopped
     command: daemon
     network_mode: host
     volumes:
