@@ -2,6 +2,25 @@
     "log": {
         "loglevel": "info"
     },
+    "policy": {
+        "levels": {
+            "0": {
+                "handshake": 5, // The handshake time limit when the connection is established, in seconds, the default value is 4, it is recommended to be different from the default value
+                "connIdle": 300, // Connection idle time limit in seconds, the default value is 300, it is recommended to be different from the default value
+                "uplinkOnly": 2,
+                "downlinkOnly": 5,
+                "statsUserUplink": false,
+                "statsUserDownlink": false,
+                "bufferSize": 10240
+            }
+        },
+        "system": {
+            "statsInboundUplink": false,
+            "statsInboundDownlink": false,
+            "statsOutboundUplink": false,
+            "statsOutboundDownlink": false
+        }
+    },
     "routing": {
         "domainStrategy": "IPIfNonMatch",
         "rules": [
@@ -16,8 +35,8 @@
     },
     "inbounds": [
         {
-            "listen": "0.0.0.0",
             "port": 443,
+            "listen": "0.0.0.0",
             "protocol": "vless",
             "settings": {
                 "clients": [
@@ -89,13 +108,5 @@
             "protocol": "blackhole",
             "tag": "block"
         }
-    ],
-    "policy": {
-        "levels": {
-            "0": {
-                "handshake": 2, // The handshake time limit when the connection is established, in seconds, the default value is 4, it is recommended to be different from the default value
-                "connIdle": 120 // Connection idle time limit in seconds, the default value is 300, it is recommended to be different from the default value
-            }
-        }
-    }
+    ]
 }
