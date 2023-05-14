@@ -14,9 +14,10 @@ _log Read environment variables from $ENV_FILE:
 
 _log EMAIL=$EMAIL
 _log DOMAIN=$DOMAIN
-_log UUID=$UUID
 _log CF_Token=$CF_Token
 _log CF_Account_ID=$CF_Account_ID
+_log UUID=$UUID
+_log TCP_PORT=$TCP_PORT
 
 if [[ ! -n "$UUID" ]]; then
     _log "UUID is missed, generating a new UUID ..."
@@ -24,6 +25,13 @@ if [[ ! -n "$UUID" ]]; then
 fi
 export UUID
 _log UUID: $UUID
+
+if [[ ! -n "$TCP_PORT" ]]; then
+    _log "TCP_PORT is missed, use default port ..."
+    TCP_PORT=8443
+fi
+export TCP_PORT
+_log TCP_PORT: $TCP_PORT
 
 _log docker compose config
 docker compose config
