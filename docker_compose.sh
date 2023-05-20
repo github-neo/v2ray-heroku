@@ -39,6 +39,9 @@ docker compose config
 _log "docker compose down --remove-orphans"
 docker compose down --remove-orphans
 
+_log "docker compose pull"
+docker compose pull
+
 _log "docker compose up -d"
 docker compose up -d
 
