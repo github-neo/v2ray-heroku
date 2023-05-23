@@ -14,12 +14,14 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "${TCP_PORT}:8443"
     labels:
       - sh.acme.autoload=caddy_v2ray
 
   acme.sh:
+    container_name: acme.sh
     image: neilpang/acme.sh:dev
-    container_name: acme.sh    
+    restart: unless-stopped
     command: daemon
     network_mode: host
     volumes:

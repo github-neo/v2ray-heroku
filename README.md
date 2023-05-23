@@ -252,6 +252,45 @@ https://github.com/badafans/better-cloudflare-ip
     ]
 ```
 
+## VLESS tcp 客户端配置
+
+### JSON
+
+```json
+"outbounds": [
+  {
+    "tag": "proxy",
+    "protocol": "vless",
+    "settings": {
+      "vnext": [{
+          "address": "******", // 服务器端地址
+          "port": 8443,
+          "users": [{
+              "id": "", // 填写你的 UUID
+              "security": "auto",
+              "encryption": "none",
+              "flow": "xtls-rprx-vision"
+            }
+          ]
+        }
+      ]
+    },
+    "streamSettings": {
+      "network": "tcp",
+      "security": "tls",
+      "tlsSettings": {
+        "allowInsecure": true,
+        "alpn": [
+          "h2"
+        ],
+        "fingerprint": "chrome",
+        "show": false
+      }
+    },
+  }
+]
+```
+
 ### v2rayN
 
 
@@ -289,7 +328,7 @@ cloudflare worker ip 配置
    cp acme_env.sh.sample ~/acme/acme_env.sh
    ```
 
-3. 修改 `~/acme/acme_env.sh` 文件，填入您的邮箱、域名（多个域名以逗号分隔）、Cloudflare API Token 和 Account ID。如果您已经有一个 UUID，请将其填入 `UUID` 变量中；否则，可以留空，脚本将自动生成一个 UUID，并显示在log中。
+3. 修改 `~/acme/acme_env.sh` 文件，填入您的邮箱、域名（多个域名以逗号分隔）、Cloudflare API Token 和 Account ID。如果您已经有一个 UUID，请将其填入 `UUID` 变量中；否则，可以留空，脚本将自动生成一个 UUID，并显示在log中。TCP_PORT用于设置v2ray TCP连接的端口号，不设置的话默认使用8443端口。
 
 4. 构建镜像：
 
@@ -303,7 +342,7 @@ cloudflare worker ip 配置
    ./docker_compose.sh
    ```
 
-6. 完成以上步骤后，Caddy 和 V2Ray 会自动启动，并监听 80 和 443 端口，同时 acme.sh 会自动申请证书并配置 HTTPS 访问。
+6. 完成以上步骤后，Caddy 和 V2Ray 会自动启动，并监听 80、443 (websocket) 和 8443 (tcp) 端口，同时 acme.sh 会自动申请证书并配置 HTTPS 访问。
 
 ## 注意事项
 
